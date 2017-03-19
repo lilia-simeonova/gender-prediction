@@ -1,14 +1,12 @@
-'use strict';
-var expect    = require("chai").expect;
-
-var gender = require('../../index.js');
-
+var gender = require('../app/index.js');
 
 var name = "Lilia";
 
-describe("test", function() {
-	it("gender prediction", function() {
-		var gender = gender.predictName(name);
-		expect(gender).to.not.throw(Error);
-	});
+test('retrieving data', () => {
+  function callback(data) {
+		console.log(data);
+    expect(data).not.toBe('undefined');
+  }
+
+  gender.predictName(name, callback);
 });
