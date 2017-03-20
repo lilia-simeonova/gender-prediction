@@ -1,6 +1,6 @@
 var gender = require('../app/index.js');
 
-var name = "Lilia";
+var name = "Lilly";
 
 test('retrieving data', () => {
   function callback(data) {

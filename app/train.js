@@ -11,19 +11,19 @@ function lastLetter(name) {
 }
 
 var lastLetterOfNames = [];
-//var listOfNames = [];
+var listOfNames = [];
 
 function createTrainingData(gender) {
-	var data = fs.readFileSync('./data/' + gender + '.txt', "utf-8");
+	var data = fs.readFileSync('../data/' + gender + '.txt', "utf-8");
 	var names = data.toString().split("\n");
 	names.map(name => lastLetterOfNames.push({letter:lastLetter(name), gender:gender}));
 }
 
-// function createTrainingDataNames(gender) {
-// 	var data = fs.readFileSync('./data/' + gender + '.txt', "utf-8");
-// 	var names = data.toString().split("\n");
-// 	names.map(name => listOfNames.push({name:name, gender:gender}));
-// }
+function createTrainingDataNames(gender) {
+	var data = fs.readFileSync('../data/' + gender + '.txt', "utf-8");
+	var names = data.toString().split("\n");
+	names.map(name => listOfNames.push({name:name, gender:gender}));
+}
 
 
 function shuffle(array) {
@@ -40,8 +40,8 @@ function shuffle(array) {
 
 createTrainingData('female');
 createTrainingData('male');
-// createTrainingDataNames('female');
-// createTrainingDataNames('male');
+createTrainingDataNames('female');
+createTrainingDataNames('male');
 
 lastLetterOfNames = shuffle(lastLetterOfNames);
 listOfNames = shuffle(listOfNames);
@@ -54,18 +54,18 @@ fs.writeFile('./names.json', JSON.stringify(listOfNames) , 'utf-8', (err) => {
 var trainingSet = [];
 
 lastLetterOfNames.map(value => classifierLetters.addDocument([value.letter], value.gender))
-//listOfNames.map(value => classifierNames.addDocument(value.name, value.gender))
+listOfNames.map(value => classifierNames.addDocument(value.name, value.gender))
 
 classifierLetters.train();
-//classifierNames.train();
+classifierNames.train();
 
-classifierLetters.save('./data/classifierLetters.json', function(err, classifierLetters) {
+// classifierLetters.save('./data/classifierLetters.json', function(err, classifierLetters) {
+// 	console.log('it is saved!')
+// });
+
+classifierNames.save('../data/classifierNames.json', function(err, classifierNames) {
     console.log('it is saved!')
 });
-
-// classifierNames.save('./data/classifierNames.json', function(err, classifierNames) {
-//     console.log('it is saved!')
-// });
 
 
 exports.gender = function(value) {
