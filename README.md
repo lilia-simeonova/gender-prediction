@@ -18,7 +18,7 @@ npm install gender-prediction
 ```javascript
 var gender = require ("gender-prediction");
 
-var name = 'Joanna'
+var name = 'Lilly'
 
 predictName(name, result => {
     console.log(result);
