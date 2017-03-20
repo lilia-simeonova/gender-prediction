@@ -3,28 +3,21 @@
 const fs = require('fs');
 
 var natural = require('natural');
-var classifierLetters = new natural.BayesClassifier();
-var classifierNames = new natural.BayesClassifier();
+var classifier= new natural.BayesClassifier();
 
-function lastLetter(name) {
-  return name.slice(-1);
-}
 
-var lastLetterOfNames = [];
-var listOfNames = [];
+// function lastLetter(name) {
+//   return name.slice(-1);
+// }
+
+// var lastLetterOfNames = [];
+var names = [];
 
 function createTrainingData(gender) {
 	var data = fs.readFileSync('../data/' + gender + '.txt', "utf-8");
-	var names = data.toString().split("\n");
-	names.map(name => lastLetterOfNames.push({letter:lastLetter(name), gender:gender}));
+	var listOfNames = data.toString().split("\n");
+	listOfNames.map(name => names.push({name:name, gender:gender}));
 }
-
-function createTrainingDataNames(gender) {
-	var data = fs.readFileSync('../data/' + gender + '.txt', "utf-8");
-	var names = data.toString().split("\n");
-	names.map(name => listOfNames.push({name:name, gender:gender}));
-}
-
 
 function shuffle(array) {
 	var currentIndex = array.length, temporaryValue, randomIndex;
@@ -40,35 +33,24 @@ function shuffle(array) {
 
 createTrainingData('female');
 createTrainingData('male');
-createTrainingDataNames('female');
-createTrainingDataNames('male');
 
-lastLetterOfNames = shuffle(lastLetterOfNames);
-listOfNames = shuffle(listOfNames);
+console.log(names);
+//lastLetterOfNames = shuffle(lastLetterOfNames);
 
-fs.writeFile('./names.json', JSON.stringify(listOfNames) , 'utf-8', (err) => {
-  if (err) throw err;
-  console.log('It\'s saved!');
-});
+names = shuffle(names);
 
-var trainingSet = [];
+names.map(value => classifier.addDocument(value.name, value.gender))
 
-lastLetterOfNames.map(value => classifierLetters.addDocument([value.letter], value.gender))
-listOfNames.map(value => classifierNames.addDocument(value.name, value.gender))
+classifier.train();
 
-classifierLetters.train();
-classifierNames.train();
-
-// classifierLetters.save('./data/classifierLetters.json', function(err, classifierLetters) {
-// 	console.log('it is saved!')
-// });
-
-classifierNames.save('../data/classifierNames.json', function(err, classifierNames) {
-    console.log('it is saved!')
+classifier.save('../data/classifier.json', function(err, classifier) {
+	console.log('it is saved!')
 });
 
 
 exports.gender = function(value) {
-	classifierLetters.getClassifications(value);
+	classifier.getClassifications(value);
 }
+
+
 

@@ -4,10 +4,7 @@ This module provides a prediction how likely is a given first name to belong to 
 
 ## Algorthm
 
-There aren't any general rules on whether a name is feminine or masculine, but there are some observations that female names are more likely to have as last letter "a" or "e", while male's could end with "r" or "s".
-A lot of names could be also unisex. 
-
-The prediction algorithm is based on Naive Bayes Classifier from [natural](https://github.com/NaturalNode/natural#classifiers). The training examples use only he last letter of given corpus with the names.
+The prediction algorithm is based on Naive Bayes Classifier from [natural](https://github.com/NaturalNode/natural#classifiers).
 
 The data set is extracted from the nlp corpora of [Carnegie Mellon University](http://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/areas/nlp/corpora/)
 
@@ -28,11 +25,11 @@ predictName(name, result => {
 });
 ```
 
-The output for `Joanna` is:
+The chances for `Lilly` to be female name is 5 times larger than to be male's name:
 
 ```javascript
-[ { label: 'female', value: 0.22322889140556182 },
-  { label: 'male', value: 0.00377500943752359 } ]
+[ { label: 'female', value: 0.0005035880649628603 },
+  { label: 'male', value: 0.00012589701624071505 } ]
 ```
 
 ## Disclaimer

@@ -7,9 +7,10 @@ function lastLetter(name) {
 }
 
 exports.predictName = function(name, callback) {
-    letter = lastLetter(name);
-    natural.BayesClassifier.load('../data/classifierLetters.json', null, function(err, classifierLetters) {
-        result = classifierLetters.getClassifications([letter]);
+   // letter = lastLetter(name);
+    natural.BayesClassifier.load('../data/classifier.json', null, function(err, classifier) {
+        result = classifier.getClassifications(name);
         callback(result)
     });
 }
+exports.predictName('Lilly', r => {console.log(r)})
